@@ -21,34 +21,10 @@ def apply_to_cols(df:pd.DataFrame) -> int:
         values = df[column].iloc[:-1].astype(float)
         operator_str = df[column].iloc[-1]
 
-        # Get the operator function
         operator_func = apply_operator(operator_str)
-
-        # Apply the operator cumulatively (e.g., for +: 5 + 3 = 8)
-        if len(values) >= 2:
-            # Start with first value
-            cumulative_result = values.iloc[0]
-
-            # Apply operator to remaining values
-            for i in range(1, len(values)):
-                cumulative_result = operator_func(cumulative_result, values.iloc[i])
-
-            res[column] = cumulative_result
-        else:
-            res[column] = values.iloc[0] if len(values) == 1 else 0
+        res[column] = operator_func(values)
 
     return int(sum(res.values()))
-
-def convert_col_r_to_l(df_col:pd.DataFrame) -> dict:
-    new_nums = {}
-    for word in list(df_col.iloc):
-        for i, char in enumerate(word[::-1]):
-            if i not in new_nums.keys():
-                new_nums[i] = char
-            else:
-                new_nums[i] += char
-    print(new_nums)
-    return new_nums
 
 def main_part_one():
     test = False
@@ -96,4 +72,4 @@ def main_part_two():
 
     print(f"The answer to part two is {result}")
 
-main_part_two()
+main_part_one()
